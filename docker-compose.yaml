@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://hoplin:hoplin@mysql:3306/fastapi_db
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+    volumes:
+      - ./app:/app/app
+    depends_on:
+      - mysql
+      - redis
+      - qdrant
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=fastapi_db
+      - MYSQL_USER=hoplin
+      - MYSQL_PASSWORD=hoplin
+      - MYSQL_ROOT_PASSWORD=hoplin
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  redis:
+    image: redis:7.0
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass hoplin
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_network
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_vector_db
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    environment:
+      - QDRANT_ALLOW_ANONYMOUS_READ=true
+      - QDRANT_API_KEY=hoplin
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
+  qdrant_data:
