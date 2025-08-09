@@ -241,6 +241,7 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "pymysql" },
     { name = "sqlalchemy" },
+    { name = "typer" },
 ]
 
 [package.metadata]
@@ -254,6 +255,7 @@ requires-dist = [
     { name = "pydantic-settings", specifier = ">=2.8.1" },
     { name = "pymysql", specifier = ">=1.1.1" },
     { name = "sqlalchemy", specifier = ">=2.0.39" },
+    { name = "typer", specifier = ">=0.15.2" },
 ]
 
 [[package]]

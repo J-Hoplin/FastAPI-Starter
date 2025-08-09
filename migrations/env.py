@@ -10,7 +10,7 @@ from alembic import context
 from apps.core.database.db import Base
 
 # Model Metadata를 위해 import 필수
-from apps.core.database.models import *
+from apps.core.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

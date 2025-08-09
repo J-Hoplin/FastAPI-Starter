@@ -14,4 +14,5 @@ dependencies = [
     "pydantic-settings>=2.8.1",
     "pymysql>=1.1.1",
     "sqlalchemy>=2.0.39",
+    "typer>=0.15.2",
 ]

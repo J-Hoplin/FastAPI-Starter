@@ -8,7 +8,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "mysql+pymysql://hoplin:hoplin@localhost:3306/fastapi_db"
     REDIS_URL: Optional[str] = None
 
-    model_config = SettingsConfigDict(env_file=".env")
+    # Ignore extra fields: https://docs.pydantic.dev/2.10/api/config/#pydantic.config.ConfigDict.extra
+    model_config = SettingsConfigDict(env_file=".env",extra="ignore")
 
 
 settings = Settings()

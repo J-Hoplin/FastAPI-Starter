@@ -1,4 +1,4 @@
-.PHONY: export-requirements install-dependencies setup docker-build docker-up docker-down migration migrate help
+.PHONY: dev-start export-requirements install-dependencies setup docker-build docker-up docker-down migration migrate help
 
 .DEFAULT_GOAL := help
 
@@ -19,8 +19,8 @@ install-dependencies:
 
 docker-build:
 	@echo "Building Docker Image"
-	@chmod +x ./commands/build.sh
-	@./commands/build.sh
+	@chmod +x ./scripts/build.sh
+	@./scripts/build.sh
 	@echo "Done"
 
 docker-up:
@@ -37,7 +37,7 @@ docker-down:
 	@docker-compose down
 	@echo "Done"
 
-migration:
+migration-sync:
 	@echo "Creating migration..."
 	@if [ -z "$(m)" ]; then \
 		echo "Migration message is required. Use: make migration m=\"Your message\""; \
@@ -46,15 +46,15 @@ migration:
 	@alembic revision --autogenerate -m "$(m)"
 	@echo "Migration created"
 
-migrate:
+migration-apply:
 	@echo "Applying migrations..."
 	@alembic upgrade head
 	@echo "Migrations applied"
 
 setup:
 	@echo "Setting up development environment"
-	@chmod +x ./commands/setup.sh
-	@./commands/setup.sh
+	@chmod +x ./scripts/setup.sh
+	@./scripts/setup.sh
 
 help:
 	@echo "Commands:"
@@ -67,3 +67,7 @@ help:
 	@echo "  docker-up            - Start Docker containers"
 	@echo "  docker-down          - Stop Docker containers"
 	@echo "  help                 - Display commands"
+
+dev-start:
+	@echo "Start application in dev mode..."
+	@fastapi dev --root-path './apps/api.py'
