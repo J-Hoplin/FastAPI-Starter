@@ -1,5 +1,11 @@
 from fastapi import APIRouter
+from fastapi.params import Depends
+
+import sqlalchemy
 from apps.api.health.serializers import HealthCheckResponse
+from dependency_injector.wiring import Provide, inject
+from apps.containers import RootContainer
+from apps.core.database.db import Database
 
 """
 Health Check Router
@@ -12,13 +18,25 @@ health_check_router = APIRouter(
     tags=["health"],
 )
 
+
 @health_check_router.get(
     path="/",
     summary="Health Check Route",
     description="Health Check Route",
-    response_model=HealthCheckResponse
+    response_model=HealthCheckResponse,
 )
-def health_check() -> HealthCheckResponse:
-    return HealthCheckResponse(**{
-        "status": "OK"
-    })
+@inject
+async def health_check(
+    db: Database = Depends(Provide[RootContainer.db])
+) -> HealthCheckResponse:
+    database_ping = False
+    async with db.session() as session:
+        test_query = await session.execute(sqlalchemy.text("SELECT 1"))
+        database_ping = test_query.scalar()
+
+    return HealthCheckResponse(
+        **{
+            "status": "OK",
+            "database_status": "OK" if bool(database_ping) else "Disconnected",
+        }
+    )

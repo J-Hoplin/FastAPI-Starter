@@ -8,9 +8,8 @@ class RootContainer(containers.DeclarativeContainer):
     db = providers.Singleton(
         Database,
         database_url=config.DATABASE_URL,
-        debug=config.DEBUG
+        debug=config.DEBUG,
     )
-
 
 
 root_container = RootContainer()

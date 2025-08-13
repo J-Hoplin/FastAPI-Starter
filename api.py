@@ -9,27 +9,24 @@ load_dotenv()
 
 # Disable docs_url and lock swagger ui (/swagger)
 app = FastAPI(
+    title="Hoplin FastAPI Template",
     description="Hoplin FastAPI Template",
     version="0.0.1",
     lifespan=application_lifespan,
     docs_url=None,
     openapi_url="/docs/openapi.json",
-    swagger_ui_parameters={
-        "displayRequestDuration": True,
-        "persistAuthorization": True
-    }
 )
 
 # Global Dependency Injection
-root_container.wire([
-    'apps.api',
-    'apps.worker'
-])
+root_container.wire(
+    packages=[
+        "apps.api",
+        "apps.worker",
+    ],
+)
 
 # API Application Entry Route
-api_entry = APIRouter(
-    prefix="/api"
-)
+api_entry = APIRouter(prefix="/api")
 
 # API Router
 api_entry.include_router(health_check_router)
