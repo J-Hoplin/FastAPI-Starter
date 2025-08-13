@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from apps.core.lifespan import application_lifespan
 from apps.api.health import health_check_router
 from apps.application_docs import document_router
+from apps.containers import root_container
 
 load_dotenv()
 
@@ -19,7 +20,11 @@ app = FastAPI(
     }
 )
 
-
+# Global Dependency Injection
+root_container.wire([
+    'apps.api',
+    'apps.worker'
+])
 
 # API Application Entry Route
 api_entry = APIRouter(
