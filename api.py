@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
+from starlette.middleware.cors import CORSMiddleware
+
 from apps.core.lifespan import application_lifespan
 from apps.api.health import health_check_router
 from apps.application_docs import document_router
@@ -23,6 +25,15 @@ root_container.wire(
         "apps.api",
         "apps.worker",
     ],
+)
+
+# CORS Setting
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # API Application Entry Route
