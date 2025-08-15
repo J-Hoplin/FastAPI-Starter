@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings,SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 
 
@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     REDIS_URL: Optional[str] = None
 
     # Ignore extra fields: https://docs.pydantic.dev/2.10/api/config/#pydantic.config.ConfigDict.extra
-    model_config = SettingsConfigDict(env_file=".env",extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
 settings = Settings()

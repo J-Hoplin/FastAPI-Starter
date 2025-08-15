@@ -1,16 +1,16 @@
-from apps.core.database.db import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum,Text
+from apps.core.database.models.base import RootModel
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum, Text
 from datetime import datetime
 import enum
 
 
-class UserRole(enum.Enum):
-    USER = "user"
-    STAFF = "staff"
-    SUPERUSER = "superuser"
+class UserProviderType(enum.Enum):
+    LOCAL = "local"
+    GOOGLE = "google"
+    APPLE = "apple"
 
 
-class User(Base):
+class User(RootModel):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -21,9 +21,10 @@ class User(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     is_staff = Column(Boolean, default=False, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
-    role = Column(Enum(UserRole), default=UserRole.USER, nullable=False)
     date_joined = Column(DateTime, default=datetime.now(), nullable=False)
     last_login = Column(DateTime, nullable=True)
     hashed_password = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.now(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.now(), nullable=False)
+    provider_type = Column(
+        Enum(UserProviderType), default=UserProviderType.LOCAL, nullable=False
+    )
+    provider_id = Column(String(150), nullable=True)

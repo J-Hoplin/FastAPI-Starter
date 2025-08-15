@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 
+from apps.api.user.controller import user_router
 from apps.core.lifespan import application_lifespan
 from apps.api.health import health_check_router
 from apps.application_docs import document_router
@@ -45,4 +46,5 @@ api_entry.include_router(health_check_router)
 
 # Global Application Router
 app.include_router(document_router)
+app.include_router(user_router)
 app.include_router(api_entry)

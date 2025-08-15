@@ -1,9 +1,11 @@
 from dependency_injector import containers, providers
-from apps.core.config import settings
+
+from apps.api.user.containers import UserModuleContainer
+from apps.core.common.config import settings
 from apps.core.database.db import Database
 
 
-class RootContainer(containers.DeclarativeContainer):
+class Application(containers.DeclarativeContainer):
     config = providers.Configuration()
     db = providers.Singleton(
         Database,
@@ -11,6 +13,8 @@ class RootContainer(containers.DeclarativeContainer):
         debug=config.DEBUG,
     )
 
+    user: UserModuleContainer = providers.Container(UserModuleContainer, db=db)
 
-root_container = RootContainer()
+
+root_container = Application()
 root_container.config.from_pydantic(settings)
