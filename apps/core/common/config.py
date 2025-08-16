@@ -5,7 +5,7 @@ from typing import Optional
 class Settings(BaseSettings):
     APP_NAME: str = "FastAPI Boost"
     DEBUG: bool = False
-    DATABASE_URL: str = "mysql+pymysql://hoplin:hoplin@localhost:3306/fastapi_db"
+    DATABASE_URL: str = "mysql+aiomysql://hoplin:hoplin@localhost:3306/fastapi_db"
     REDIS_URL: Optional[str] = None
     JWT_ISSUER: str
     JWT_SECRET_KEY: str = "SECRET"

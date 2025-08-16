@@ -34,7 +34,6 @@ async def signin(
     body: SigninRequest,
     service: Annotated[AuthService, Depends(Provide[Application.auth.service])],
 ):
-    print(service)
     token = await service.signin(body)
     return {
         "access_token": token,

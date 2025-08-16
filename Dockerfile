@@ -1,15 +1,10 @@
-FROM python:3.11-slim
+FROM ghcr.io/astral-sh/uv:python3.12-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+COPY pyproject.toml uv.lock ./
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir uvicorn
+RUN uv sync --frozen --no-cache --no-dev
 
 COPY . .
 
@@ -18,4 +13,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
-CMD bash -c "alembic upgrade head && python -m uvicorn main:app --workers 4 --port 8000 --host 0.0.0.0"
+CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn api:app --workers 4 --port 8000 --host 0.0.0.0"]

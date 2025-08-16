@@ -10,8 +10,14 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=mysql+pymysql://hoplin:hoplin@mysql:3306/fastapi_db
+      - DATABASE_URL=mysql+aiomysql://hoplin:hoplin@mysql:3306/fastapi_db
       - REDIS_URL=redis://redis:6379/0
+      - SWAGGER_USERNAME=hoplin
+      - SWAGGER_PASSWORD=hoplin
+      - JWT_ISSUER=Hoplin
+      - JWT_SECRET_KEY=SECRET
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRE_MINUTE=120
     volumes:
       - ./app:/app/app
     depends_on:
