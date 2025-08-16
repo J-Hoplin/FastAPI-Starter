@@ -1,7 +1,6 @@
-from datetime import datetime
 from typing import Optional
 from pydantic import Field, BaseModel, EmailStr
-from apps.core.common.dto import PaginationBase, SortEnum
+from apps.core.common.schemas import PaginationBase, SortEnum
 
 
 class ListUserFilter(PaginationBase):
@@ -18,5 +17,4 @@ class CreateUser(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
-    date_joined: datetime = Field(default_factory=datetime.now)
     password: str

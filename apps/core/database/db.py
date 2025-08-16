@@ -30,7 +30,7 @@ class Database:
         self.engine = create_async_engine(
             database_url,
             pool_pre_ping=True,
-            echo=debug,
+            echo=False,
         )
         self.session_factory = async_scoped_session(
             async_sessionmaker(
@@ -54,6 +54,7 @@ class Database:
             logger.error(f"Session rollback due to exception: {exc}")
             if session.in_transaction():
                 await session.rollback()
+            raise
         finally:
             await session.close()
             await self.session_factory.remove()

@@ -22,6 +22,14 @@
 
 - [Map ORM instance to pydantic model](https://docs.pydantic.dev/latest/concepts/models/#arbitrary-class-instances)
 
+## SQLAlchemy
+
+- [Engine Disposal](https://docs.sqlalchemy.org/en/20/core/connections.html#engine-disposal)
+
+## Typer
+
+- [Alternative names for typer command option](https://typer.tiangolo.com/tutorial/parameter-types/bool/#alternative-names)
+
 ## Dependency Injector
 
 - [Multiple Container(Nested Container Hireachy)](https://python-dependency-injector.ets-labs.org/examples/application-multiple-containers.html?utm_source=chatgpt.com)
