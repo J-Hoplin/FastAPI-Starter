@@ -14,7 +14,9 @@ class AuthService:
         user = await self.user_repository.retrieve_user_with_unique_clause(
             key="email", value=body.email, filter_is_active=True
         )
+        print(user)
         if not user:
+            print("Here??", body.model_dump())
             raise InvalidCredentialException()
 
         if not verify_password(body.password, user.hashed_password):

@@ -14,6 +14,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - SWAGGER_USERNAME=hoplin
       - SWAGGER_PASSWORD=hoplin
+      - ADMIN_SESSION_SECRET_KEY=admin_secret
       - JWT_ISSUER=Hoplin
       - JWT_SECRET_KEY=SECRET
       - JWT_ALGORITHM=HS256

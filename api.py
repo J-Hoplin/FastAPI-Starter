@@ -1,9 +1,13 @@
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
+from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from apps.api.auth.controller import auth_router
 from apps.api.user.controller import user_router
+from apps.api.user.admin import UserAdmin
+from apps.core.admin import AdminPageAuthentication
 from apps.core.lifespan import application_lifespan
 from apps.api.health import health_check_router
 from apps.application_docs import document_router
@@ -26,6 +30,21 @@ app = FastAPI(
 root_container.wire(
     packages=["apps.api", "apps.worker", "apps.core.auth"],
 )
+
+
+# Admin Authentication & Admin Page: /admin
+app.add_middleware(
+    SessionMiddleware, secret_key=root_container.config.get("ADMIN_SESSION_SECRET_KEY")
+)
+admin = Admin(
+    app=app,
+    engine=root_container.db().engine,
+    authentication_backend=AdminPageAuthentication(
+        secret_key=root_container.config.get("ADMIN_SESSION_SECRET_KEY"),
+        database=root_container.db(),
+    ),
+)
+admin.add_view(UserAdmin)
 
 # CORS Setting
 app.add_middleware(
