@@ -5,13 +5,14 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from dotenv import load_dotenv
+
 load_dotenv(".env")
 
 from alembic import context
 from apps.core.database.db import Base
+from apps.core.database.models import *
 
 # Model Metadata를 위해 import 필수
-from apps.core.models import *
 
 """
 Use alembic with asyncio는 하단 문서 참조

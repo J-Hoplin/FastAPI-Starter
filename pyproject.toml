@@ -7,13 +7,15 @@ requires-python = ">=3.12"
 dependencies = [
     "aiomysql>=0.2.0",
     "alembic>=1.15.1",
-    "bcrypt>=4.3.0",
+    "bcrypt==3.2.2",
     "cryptography>=44.0.2",
     "dependency-injector>=4.48.1",
     "fastapi[standard]>=0.115.11",
     "loguru>=0.7.3",
+    "passlib[bcrypt]>=1.7.4",
     "pre-commit>=4.1.0",
     "pydantic-settings>=2.8.1",
+    "pyjwt>=2.10.1",
     "sqlalchemy[asyncio]>=2.0.39",
     "typer>=0.15.2",
 ]

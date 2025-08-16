@@ -4,7 +4,7 @@ from fastapi.params import Depends
 import sqlalchemy
 from apps.api.health.serializers import HealthCheckResponse
 from dependency_injector.wiring import Provide, inject
-from apps.containers import RootContainer
+from apps.containers import Application
 from apps.core.database.db import Database
 
 """
@@ -15,7 +15,7 @@ For container health check endpoint
 
 health_check_router = APIRouter(
     prefix="/health",
-    tags=["health"],
+    tags=["Health Check Module"],
 )
 
 
@@ -27,7 +27,7 @@ health_check_router = APIRouter(
 )
 @inject
 async def health_check(
-    db: Database = Depends(Provide[RootContainer.db])
+    db: Database = Depends(Provide[Application.db])
 ) -> HealthCheckResponse:
     database_ping = False
     async with db.session() as session:
