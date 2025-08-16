@@ -15,7 +15,7 @@ For container health check endpoint
 
 health_check_router = APIRouter(
     prefix="/health",
-    tags=["health"],
+    tags=["Health Check Module"],
 )
 
 

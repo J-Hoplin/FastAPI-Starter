@@ -2,6 +2,10 @@
 
 ## Fast API
 
+### Dependency Injection
+
+- [`Depends()` invoke dependency callable only once and cache in reuqest context(Depends `use_cache` parameter)](https://fastapi.tiangolo.com/reference/dependencies/#fastapi.Depends)
+
 ### Router
 - [Query Paramter Parsing(including pydantic model)](https://fastapi.tiangolo.com/tutorial/query-param-models/)
 - [Declaring request body](https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel)

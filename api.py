@@ -2,11 +2,13 @@ from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 
+from apps.api.auth.controller import auth_router
 from apps.api.user.controller import user_router
 from apps.core.lifespan import application_lifespan
 from apps.api.health import health_check_router
 from apps.application_docs import document_router
 from apps.containers import root_container
+from apps.core.exception.base import root_exception_handler, RootException
 
 load_dotenv()
 
@@ -22,10 +24,7 @@ app = FastAPI(
 
 # Global Dependency Injection
 root_container.wire(
-    packages=[
-        "apps.api",
-        "apps.worker",
-    ],
+    packages=["apps.api", "apps.worker", "apps.core.auth"],
 )
 
 # CORS Setting
@@ -37,14 +36,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Exception Handler
+app.add_exception_handler(RootException, root_exception_handler)
+
 # API Application Entry Route
 api_entry = APIRouter(prefix="/api")
 
 # API Router
 api_entry.include_router(health_check_router)
+api_entry.include_router(user_router)
+api_entry.include_router(auth_router)
 
 
 # Global Application Router
 app.include_router(document_router)
-app.include_router(user_router)
 app.include_router(api_entry)

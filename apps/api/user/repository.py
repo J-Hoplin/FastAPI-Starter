@@ -1,5 +1,6 @@
 from sqlalchemy import select, func
 from datetime import datetime
+from typing import Literal
 
 from apps.api.user.dto.request import ListUserFilter
 from apps.core.database.db import Database
@@ -14,8 +15,9 @@ class UserRepository:
         offset = query_filter.get_offset()
         conditions = []
 
-        if query_filter.username:
-            conditions.append(User.username.ilike(f"%{query_filter.username}%"))
+        if query_filter.name:
+            conditions.append(User.first_name.ilike(f"%{query_filter.username}%"))
+            conditions.append(User.last_name.ilike(f"%{query_filter.username}%"))
 
         if query_filter.email:
             conditions.append(User.email.ilike(f"%{query_filter.email}%"))
@@ -47,6 +49,32 @@ class UserRepository:
     async def retrieve_user_with_id(self, user_id: int):
         async with self.db.session() as session:
             query = select(User).where(User.id == user_id)
+            user = (await session.execute(query)).scalar()
+            if user:
+                return user
+            else:
+                return None
+
+    async def retrieve_user_with_unique_clause(
+        self,
+        key: Literal["username", "email"],
+        value: str,
+        filter_is_active: bool = False,
+    ) -> User:
+        assert key in ("username", "email")
+        assert value is not None
+
+        where_clause = []
+        if key == "username":
+            where_clause.append(User.username == value)
+        elif key == "email":
+            where_clause.append(User.email == value)
+
+        if filter_is_active:
+            where_clause.append(User.is_active.is_(True))
+
+        async with self.db.session() as session:
+            query = select(User).where(*where_clause)
             user = (await session.execute(query)).scalar()
             if user:
                 return user
