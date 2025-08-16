@@ -16,6 +16,7 @@ dependencies = [
     "pre-commit>=4.1.0",
     "pydantic-settings>=2.8.1",
     "pyjwt>=2.10.1",
+    "sqladmin[full]>=0.21.0",
     "sqlalchemy[asyncio]>=2.0.39",
     "typer>=0.15.2",
 ]

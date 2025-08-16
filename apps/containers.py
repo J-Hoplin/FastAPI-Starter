@@ -8,7 +8,7 @@ from apps.core.database.db import Database
 
 class Application(containers.DeclarativeContainer):
     config: dict = providers.Configuration()
-    db = providers.Singleton(
+    db: Database = providers.Singleton(
         Database,
         database_url=config.DATABASE_URL,
         debug=config.DEBUG,

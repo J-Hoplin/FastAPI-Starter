@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "SECRET"
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTE: int = 120
+    ADMIN_SESSION_SECRET_KEY: str
 
     # Ignore extra fields: https://docs.pydantic.dev/2.10/api/config/#pydantic.config.ConfigDict.extra
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
