@@ -1,8 +1,8 @@
 from sqlalchemy import select, func
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Tuple, List
 
-from apps.api.user.dto.request import ListUserFilter
+from apps.api.user.schemas.request import ListUserFilter
 from apps.core.database.db import Database
 from apps.core.database.models import User
 
@@ -81,6 +81,26 @@ class UserRepository:
             else:
                 return None
 
+    async def check_user_exists(self, username: str = None, email: str = None):
+        async with self.db.session() as session:
+            conflicts = []
+
+            if username:
+                existing_username = await session.scalar(
+                    select(User).where(User.username == username)
+                )
+                if existing_username:
+                    conflicts.append("username")
+
+            if email:
+                existing_email = await session.scalar(
+                    select(User).where(User.email == email)
+                )
+                if existing_email:
+                    conflicts.append("email")
+
+            return conflicts
+
     async def create_user(
         self,
         username: str,
@@ -89,7 +109,19 @@ class UserRepository:
         last_name: str,
         date_joined: datetime,
         hashed_password: str,
-    ):
+    ) -> Tuple[User | None, List[str] | None]:
+        """
+        Returns
+
+        - Val 1: Created user
+        - Val 2: Conflicted unique clauses
+        """
+
+        conflicts = await self.check_user_exists(username=username, email=email)
+
+        if conflicts:
+            return None, conflicts
+
         async with self.db.session() as session:
             new_user = User(
                 username=username,
@@ -103,4 +135,5 @@ class UserRepository:
             session.add(new_user)
             await session.commit()
             await session.refresh(new_user)
-            return new_user
+
+            return new_user, None

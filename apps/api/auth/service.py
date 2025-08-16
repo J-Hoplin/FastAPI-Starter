@@ -1,4 +1,4 @@
-from apps.api.auth.dto.request import SigninRequest
+from apps.api.auth.schemas.request import SigninRequest
 from apps.api.user.repository import UserRepository
 from apps.core.auth.exception import InvalidCredentialException
 from apps.core.auth.hash import verify_password

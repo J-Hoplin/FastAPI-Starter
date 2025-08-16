@@ -1,4 +1,4 @@
-.PHONY: dev-start export-requirements install-dependencies setup docker-build docker-up docker-down migration migrate help
+.PHONY: dev-start export-requirements install-dependencies setup docker-build docker-up docker-down migration migrate create-superuser help
 
 .DEFAULT_GOAL := help
 
@@ -56,6 +56,10 @@ setup:
 	@chmod +x ./scripts/setup.sh
 	@./scripts/setup.sh
 
+create-superuser:
+	@python -m apps.commands.create_superuser --hide-password
+	@echo "Done"
+
 help:
 	@echo "Commands:"
 	@echo "  setup                - Install uv and project dependencies"
@@ -63,6 +67,7 @@ help:
 	@echo "  install-dependencies - Install dependencies from pyproject.toml"
 	@echo "  migration m=\"message\" - Create a new migration with the given message"
 	@echo "  migrate              - Apply all pending migrations"
+	@echo "  create-superuser     - Create a superuser account"
 	@echo "  docker-build         - Build Docker image"
 	@echo "  docker-up            - Start Docker containers"
 	@echo "  docker-down          - Stop Docker containers"

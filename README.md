@@ -28,7 +28,7 @@ Leveraged techniques described below
 
 ## Already Implemented
 
-- JWT Login
+- JWT Base Authorization
 - SignIn/SignUp
 - User List/Retrieve (Only superuser or staff)
   - `role_granted_user` defined in [`apps.core.auth.context`](apps/core/auth/context.py)
@@ -42,6 +42,27 @@ This base code provide model admin page with [`SQLAdmin`](https://aminalaee.gith
 
 ![admin-pannel](img/admin-pannel.png)
 
+## Create Superuser and commands
+
+This base code grants special privileges only to users marked as superuser or staff, allowing them to access specific endpoints and manage the application (e.g., the admin page).
+To create a superuser, you can use the pre-built command included in this application, available through both make and the Python module run command.
+
+```text
+# Use make
+
+make create-superuser
+
+# Python module run command
+
+python -m apps.commands.create_superuser
+```
+
+Execution Example
+
+![img](img/create-superuser-command.png)
+
+Check out the [README.md](apps/commands/Readme.md) for more information on the pre-built commands in this application.
+
 ## Swagger & Swagger Protection
 
 In this base code, Swagger is protected with Basic Authentication.
@@ -50,7 +71,7 @@ The username and password for accessing Swagger are defined as environment varia
 - SWAGGER_USERNAME
 - SWAGGER_PASSWORD
 
-The Swagger UI is available at the route: `/docs/swagger`
+The Swagger UI is available at the endpoint: `/docs/swagger`
 
 ## Relevant documents on concepts leveraged in this base code
 

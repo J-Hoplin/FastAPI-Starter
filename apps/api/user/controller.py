@@ -4,8 +4,8 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter
 from fastapi.params import Depends, Query, Path
 
-from apps.api.user.dto.request import ListUserFilter
-from apps.api.user.dto.response import UserResponse
+from apps.api.user.schemas.request import ListUserFilter
+from apps.api.user.schemas.response import UserResponse
 from apps.api.user.service import UserService
 from apps.containers import Application
 from apps.core.common.response import PaginatedResponse
