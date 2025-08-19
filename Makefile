@@ -2,6 +2,9 @@
 
 .DEFAULT_GOAL := help
 
+run:
+	@uv run uvicorn api:app --workers 4 --port 8000 --host 0.0.0.0 --loop uvloop --http httptools
+
 export-requirements:
 	@echo "Exporting dependencies from uv to requirements.txt"
 	@uv pip freeze | grep -v "^-e" > requirements.txt
