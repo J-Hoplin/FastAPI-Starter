@@ -13,4 +13,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn api:app --workers 4 --port 8000 --host 0.0.0.0"]
+CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn api:app --workers 4 --port 8000 --host 0.0.0.0 --loop uvloop --http httptools"]

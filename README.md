@@ -77,6 +77,11 @@ The Swagger UI is available at the endpoint: `/docs/swagger`
 
 Refer to [ReadMe.md](apps/core/Readme.md) in `apps.core`
 
+## Start application without Docker (Recommended)
+
+`make run` starts the application with Uvicorn, using uvloop as the event loop. This provides better performance compared to the default asyncio event loop.
+
+
 ## Start Application with docker
 
 Start the project with Docker using:
