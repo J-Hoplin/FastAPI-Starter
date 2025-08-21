@@ -24,14 +24,7 @@ class AdminPageAuthentication(AuthenticationBackend):
         if not username or not password:
             return False
 
-        user = await self.user_repository.retrieve_user_with_unique_clause(
-            key="username", value=username, filter_is_active=True
-        )
-
-        if not user:
-            user = await self.user_repository.retrieve_user_with_unique_clause(
-                key="email", value=username, filter_is_active=True
-            )
+        user = await self.user_repository.retrieve_superuser_or_staff(username=username)
 
         if not user:
             return False

@@ -1,11 +1,16 @@
-import os
-import secrets
 from typing import Annotated
 
-from fastapi import APIRouter, status, HTTPException
+from dependency_injector.wiring import Provide, inject
+from fastapi import APIRouter
 from fastapi.params import Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.openapi.docs import get_swagger_ui_html
+
+from apps.api.auth.exception import PermissionDeniedException
+from apps.api.user.repository import UserRepository
+from apps.containers import Application
+from apps.core.auth.exception import InvalidCredentialException
+from apps.core.auth.hash import verify_password
 
 security = HTTPBasic()
 
@@ -15,23 +20,26 @@ document_router = APIRouter(
 
 
 @document_router.get(path="/swagger", include_in_schema=False)
-def swagger_auth(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
+@inject
+async def swagger_auth(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+    user_repository: Annotated[
+        UserRepository, Depends(Provide[Application.user.repository])
+    ],
+):
     typed_username = credentials.username
     typed_userpassword = credentials.password
 
-    expected_username = os.getenv("SWAGGER_USERNAME")
-    expected_userpassword = os.getenv("SWAGGER_PASSWORD")
-
-    is_username_correct = secrets.compare_digest(typed_username, expected_username)
-    is_password_correct = secrets.compare_digest(
-        typed_userpassword, expected_userpassword
+    user = await user_repository.retrieve_superuser_or_staff(
+        username=typed_username,
     )
-    if not (is_username_correct and is_password_correct):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
+
+    if not user:
+        raise PermissionDeniedException()
+
+    if not verify_password(typed_userpassword, user.hashed_password):
+        raise InvalidCredentialException()
+
     return get_swagger_ui_html(
         openapi_url="/docs/openapi.json",
         title="Swagger UI",
