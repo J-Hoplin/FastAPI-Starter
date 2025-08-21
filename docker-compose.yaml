@@ -12,8 +12,6 @@ services:
     environment:
       - DATABASE_URL=mysql+aiomysql://hoplin:hoplin@mysql:3306/fastapi_db
       - REDIS_URL=redis://redis:6379/0
-      - SWAGGER_USERNAME=hoplin
-      - SWAGGER_PASSWORD=hoplin
       - ADMIN_SESSION_SECRET_KEY=admin_secret
       - JWT_ISSUER=Hoplin
       - JWT_SECRET_KEY=SECRET
