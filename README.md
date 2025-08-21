@@ -33,8 +33,6 @@ Leveraged techniques described below
 - User List/Retrieve (Only superuser or staff)
   - `role_granted_user` defined in [`apps.core.auth.context`](apps/core/auth/context.py)
 
-![admin-pannel](img/admin-pannel.png)
-
 ## Create Superuser and commands
 
 This base code grants special privileges only to users marked as superuser or staff, allowing them to access specific endpoints and manage the application (e.g., the admin page).
@@ -62,6 +60,8 @@ This base code provide model admin page with [`SQLAdmin`](https://aminalaee.gith
 **Admin page access requires a user account with superuser or staff privileges. Users without either of these cannot log in.**
 
 - Endpoint: `/admin`
+
+![admin-pannel](img/admin-pannel.png)
 
 ## Swagger & Swagger Protection
 
