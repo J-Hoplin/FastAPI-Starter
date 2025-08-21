@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import select, func, or_, and_
 from datetime import datetime
 from typing import Literal, Tuple, List
 
@@ -100,6 +100,22 @@ class UserRepository:
                     conflicts.append("email")
 
             return conflicts
+
+    async def retrieve_superuser_or_staff(self, username: str):
+        async with self.db.session() as session:
+            query = select(User).where(
+                and_(
+                    User.username == username,
+                    User.is_active.is_(True),
+                    or_(User.is_superuser.is_(True), User.is_staff.is_(True)),
+                )
+            )
+
+            user = (await session.execute(query)).scalar()
+            if user:
+                return user
+            else:
+                return None
 
     async def create_user(
         self,

@@ -28,7 +28,7 @@ app = FastAPI(
 
 # Global Dependency Injection
 root_container.wire(
-    packages=["apps.api", "apps.worker", "apps.core.auth"],
+    packages=["apps.api", "apps.worker", "apps.core.auth", "apps.application_docs"],
 )
 
 

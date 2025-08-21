@@ -33,13 +33,6 @@ Leveraged techniques described below
 - User List/Retrieve (Only superuser or staff)
   - `role_granted_user` defined in [`apps.core.auth.context`](apps/core/auth/context.py)
 
-## Admin Page
-
-This base code provide model admin page with [`SQLAdmin`](https://aminalaee.github.io/sqladmin/).
-**Admin page access requires a user account with superuser or staff privileges. Users without either of these cannot log in.**
-
-- Endpoint: `/admin`
-
 ![admin-pannel](img/admin-pannel.png)
 
 ## Create Superuser and commands
@@ -63,15 +56,19 @@ Execution Example
 
 Check out the [README.md](apps/commands/Readme.md) for more information on the pre-built commands in this application.
 
+## Admin Page
+
+This base code provide model admin page with [`SQLAdmin`](https://aminalaee.github.io/sqladmin/).
+**Admin page access requires a user account with superuser or staff privileges. Users without either of these cannot log in.**
+
+- Endpoint: `/admin`
+
 ## Swagger & Swagger Protection
 
-In this base code, Swagger is protected with Basic Authentication.
-The username and password for accessing Swagger are defined as environment variables:
+In this base code, Swagger is protected with authentication.
+**Swagger page access requires a user account with superuser or staff privileges. Users without either of these cannot log in.**
 
-- SWAGGER_USERNAME
-- SWAGGER_PASSWORD
-
-The Swagger UI is available at the endpoint: `/docs/swagger`
+- Endpoint: `/docs/swagger`
 
 ## Relevant documents on concepts leveraged in this base code
 
